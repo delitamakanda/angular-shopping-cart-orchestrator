@@ -1,0 +1,32 @@
+{
+  "name": "angular-shopping-cart-orchestrator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "quality": "tsx scripts/orchestrate.ts",
+    "quality:e2e": "npx playwright test tests/e2e",
+    "quality:api": "npx playwright test tests/api",
+    "quality:a11y": "npx playwright test tests/accessibility",
+    "quality:lighthouse": "lhci autorun",
+    "quality:report": "tsx scripts/aggregate-report.ts",
+    "quality:headed": "npx playwright test --headed",
+    "quality:debug": "npx playwright test --debug",
+    "report:playwright": "npx playwright show-report reports/playwright-html",
+    "e2e:install": "npx playwright install",
+    "e2e:install:ci": "npx playwright install --with-deps chromium"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "dotenv": "^17.4.2",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}

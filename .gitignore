@@ -1,0 +1,14 @@
+.idea
+node_modules
+.env
+dist
+.vscode
+.DS_Store
+settings.json
+settings.local.json
+
+reports/*
+!reports/.gitkeep
+playwright-report/*
+test-results/*
+.lighthouseci/
