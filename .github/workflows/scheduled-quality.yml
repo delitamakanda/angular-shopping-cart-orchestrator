@@ -1,0 +1,93 @@
+name: Scheduled Quality Checks
+
+on:
+    workflow_dispatch:
+        inputs:
+            target_environment:
+                description: 'Target environment for quality checks'
+                required: true
+                default: production
+                type: choice
+                options:
+                    - production
+                    - development
+    schedule:
+        - cron: "17 6 * * 1-5"
+          timezone: "Europe/Paris"
+
+permissions:
+    contents: read
+
+concurrency:
+    group: scheduled-quality-checks-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    scheduled-quality-checks:
+        name: Scheduled Quality Checks
+        runs-on: ubuntu-latest
+
+        timeout-minutes: 30
+        env:
+            CI: "true"
+
+            TARGET_ENV: >-
+                ${{ github.event.inputs.target_environment || 'production' }}
+            
+            BASE_URL: >-
+                ${{ github.event.inputs.target_environment == 'production' && vars.BASE_URL_PROD || vars.BASE_URL_DEV }}
+
+            API_URL: >-
+                ${{ github.event.inputs.target_environment == 'production' && vars.API_URL_PROD || vars.API_URL_DEV }}
+
+            E2E_USERNAME: ${{secrets.E2E_USERNAME}}
+            E2E_PASSWORD: ${{secrets.E2E_PASSWORD}}
+
+            API_TESTS_ENABLED: "true"
+            ACCESSIBILITY_ENABLED: "true"
+            LIGHTHOUSE_ENABLED: "true"
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                node-version: '22'
+                cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install Chromium
+              run: npx playwright install --with-deps chromium
+
+            - name: Run quality checks
+              id: run-quality-checks
+              continue-on-error: true
+              run: npm run quality
+            
+            - name: Add report to job summary
+              if: always()
+              run: |
+                if [ -f "reports/quality-report.md" ]; then
+                  cat reports/quality-report.md >> "$GITHUB_STEP_SUMMARY"
+                else
+                  echo "Quality report not found" >> "$GITHUB_STEP_SUMMARY"
+                fi
+            
+            - name: Upload quality report artifact
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                name: quality-report-${{ github.run_number }}
+                path: |
+                  reports/
+                retention-days: 30
+                if-no-files-found: warn
+
+            - name: Fail the job if quality checks failed
+              if: steps.run-quality-checks.outcome == 'failure'
+              run: |
+                echo "Quality checks failed. Please review the report for details."
+                exit 1
