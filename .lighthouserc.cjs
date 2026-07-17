@@ -5,7 +5,8 @@ module.exports = {
         collect: {
             url: [
                 `${baseUrl}`,
-                `${baseUrl}products`,
+                `${baseUrl}fr/login`,
+                `${baseUrl}fr/home/product/f8623d05-9541-4c5b-ae68-06ee4c7dd004`,
             ],
             numberOfRuns: 2,
             settings: {
