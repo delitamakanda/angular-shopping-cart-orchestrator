@@ -1,4 +1,4 @@
-const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+const baseUrl = process.env.BASE_URL || 'https://agreeable-wave-082824403.5.azurestaticapps.net/';
 
 module.exports = {
     ci: {

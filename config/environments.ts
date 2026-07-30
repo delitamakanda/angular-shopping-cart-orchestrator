@@ -11,12 +11,12 @@ export interface TestEnvironment {
 
 const environments: Record<Environment, TestEnvironment> = {
   development: {
-    apiUrl: 'http://localhost:3000/api',
-    baseUrl: 'http://localhost:3000',
+    apiUrl: 'https://merchstoreapi.applikuapp.com/api',
+    baseUrl: 'https://agreeable-wave-082824403.5.azurestaticapps.net/fr/home',
   },
   production: {
-    apiUrl: config().parsed?.API_URL || 'https://api.example.com',
-    baseUrl: config().parsed?.BASE_URL || 'https://www.example.com',
+    apiUrl: config().parsed?.API_URL || 'https://merchstoreapi.applikuapp.com/api',
+    baseUrl: config().parsed?.BASE_URL || 'https://agreeable-wave-082824403.5.azurestaticapps.net/fr/home',
   },
 }
 

@@ -6,7 +6,7 @@ const environmentConfig = getEnvironmentConfig(env);
 
 test.describe('Health API', () => {
   test('should return a successful response from the health endpoint', async ({ request }) => {
-    const response = await request.get(`${environmentConfig.apiUrl}/health`);
+    const response = await request.get(`${environmentConfig.apiUrl}/store/health/`);
     expect(response.status()).toBe(200);
     const responseBody = await response.json();
     expect(responseBody.status).toBe('ok');

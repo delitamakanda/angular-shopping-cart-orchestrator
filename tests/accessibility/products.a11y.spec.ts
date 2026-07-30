@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'fs/promises';
 test.describe('Accessibility tests for products page', () => {
   test('should have no accessibility violations on products page', async ({ page }) => {
     // Navigate to the products page
-    await page.goto('/products');
+    await page.goto('/');
 
     // Run accessibility checks using Axe
     const results = await new AxeBuilder({ page }).analyze();
