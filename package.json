@@ -10,7 +10,7 @@
     "quality:api": "npx playwright test tests/api",
     "quality:a11y": "npx playwright test tests/accessibility",
     "quality:lighthouse": "lhci autorun",
-    "quality:report": "tsx scripts/aggregate-report.ts",
+    "quality:report": "tsx scripts/aggregate-reports.ts",
     "quality:headed": "npx playwright test --headed",
     "quality:debug": "npx playwright test --debug",
     "report:playwright": "npx playwright show-report reports/playwright-html",
